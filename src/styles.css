@@ -20,9 +20,9 @@ body {
     width: 800px;
     height: 600px;
     background-color: rgba(135, 206, 235, 0.8); /* Fondo semitransparente */
-    background-image: url('background.jpg'); /* Fondo del juego */
+    background-image: url('background.png'); /* Fondo del juego */
     background-size: cover;
-    background-position: center;
+    background-position: center top; /* Mueve el fondo hacia arriba */
     overflow: hidden;
     border: 2px solid black;
     border-radius: 10px;
@@ -33,14 +33,23 @@ body {
     position: absolute;
     bottom: 20px;
     left: 50%;
-    width: 60px; /* Ajusta el tamaño del jugador */
-    height: 60px;
+    width: 40px; /* Tamaño visible del sprite */
+    height: 50px;
     background-image: url('furro.png'); /* Imagen del jugador */
-    background-size: contain; /* Ajusta la imagen al contenedor */
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: transparent; /* Asegura que no haya fondo */
     transform: translateX(-50%);
+}
+
+#hitbox {
+    position: absolute;
+    width: 20px; 
+    height: 30px; 
+    top: 5px;
+    left: 5px;
+    background-color: rgba(255, 0, 0, 0.3); 
+    border-radius: 5px;
 }
 
 .projectile {
