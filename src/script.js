@@ -2,18 +2,32 @@ const player = document.getElementById('player');
 const gameContainer = document.getElementById('game-container');
 
 let playerPosition = { x: gameContainer.clientWidth / 2 - 25, y: gameContainer.clientHeight - 60 };
+const step = 5; // Reduce el paso para un movimiento más lento
+let keysPressed = {}; // Almacena las teclas presionadas
 
-// Mover el jugador hacia los lados
-document.addEventListener('keydown', (e) => {
-    const step = 15;  
-    if (e.key === 'ArrowLeft' && playerPosition.x > 0) {
-        playerPosition.x -= step; 
-    } else if (e.key === 'ArrowRight' && playerPosition.x < gameContainer.clientWidth - 50) {
-        playerPosition.x += step;  
+// Actualizar la posición del jugador
+function updatePlayerPosition() {
+    if (keysPressed['ArrowLeft'] && playerPosition.x > 0) {
+        playerPosition.x -= step;
     }
-
+    if (keysPressed['ArrowRight'] && playerPosition.x < gameContainer.clientWidth - 70) { // Ajusta según el ancho del jugador
+        playerPosition.x += step;
+    }
     player.style.left = playerPosition.x + 'px';
+}
+
+// Detectar teclas presionadas
+document.addEventListener('keydown', (e) => {
+    keysPressed[e.key] = true;
 });
+
+// Detectar teclas soltadas
+document.addEventListener('keyup', (e) => {
+    keysPressed[e.key] = false;
+});
+
+// Actualizar la posición del jugador continuamente
+setInterval(updatePlayerPosition, 20); // Ajusta la frecuencia de actualización
 
 // Generar proyectiles
 function createProjectile() {
