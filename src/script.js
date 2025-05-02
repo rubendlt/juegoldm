@@ -66,5 +66,24 @@ function resetGame() {
     location.reload();
 }
 
-// Generar proyectiles continuamente
-setInterval(createProjectile, 1000);
+// Generar proyectiles continuamente con intervalo decreciente
+let projectileInterval = 1000; // Tiempo inicial entre proyectiles (en milisegundos)
+let minInterval = 300; // Tiempo mínimo entre proyectiles
+let intervalDecrement = 50; // Cantidad que se reduce el intervalo cada vez
+let intervalId;
+
+function startProjectileGeneration() {
+    intervalId = setInterval(() => {
+        createProjectile();
+
+        // Reducir el intervalo progresivamente
+        if (projectileInterval > minInterval) {
+            projectileInterval -= intervalDecrement;
+            clearInterval(intervalId); // Reinicia el intervalo con el nuevo tiempo
+            startProjectileGeneration();
+        }
+    }, projectileInterval);
+}
+
+// Inicia la generación de proyectiles
+startProjectileGeneration();

@@ -42,16 +42,6 @@ body {
     transform: translateX(-50%);
 }
 
-#hitbox {
-    position: absolute;
-    width: 20px; 
-    height: 30px; 
-    top: 5px;
-    left: 5px;
-    background-color: rgba(255, 0, 0, 0.3); 
-    border-radius: 5px;
-}
-
 .projectile {
     position: absolute;
     width: 30px; /* Ajusta el tamaño de las gotas */
