@@ -54,8 +54,8 @@ body {
 
 .projectile {
     position: absolute;
-    width: 45px; /* Reduce el ancho de la hitbox de la gota */
-    height: 45px; /* Reduce el alto de la hitbox de la gota */
+    width: 30px; /* Reduce el ancho de la hitbox de la gota */
+    height: 30px; /* Reduce el alto de la hitbox de la gota */
     background-image: url('gotas.png'); 
     background-size: contain; 
     background-repeat: no-repeat;

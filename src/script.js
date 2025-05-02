@@ -131,20 +131,35 @@ function resetGame() {
 }
 
 // Generar proyectiles continuamente con intervalo decreciente
-let projectileInterval = 1000; // Tiempo inicial entre proyectiles (en milisegundos)
-let minInterval = 300; // Tiempo mínimo entre proyectiles
-let intervalDecrement = 50; // Cantidad que se reduce el intervalo cada vez
+let projectileInterval = 1200; // Tiempo inicial entre proyectiles (en milisegundos)
+let minInterval = 500; // Tiempo mínimo entre proyectiles
+let intervalDecrement = 100; // Cantidad que se reduce el intervalo cada vez
 let intervalId;
+let projectilesPerInterval = 2; // Número inicial de gotas por intervalo
 
 function startProjectileGeneration() {
+    // Generar gotas rápidamente al inicio
+    for (let i = 0; i < 3; i++) { // Genera 3 gotas rápidamente al inicio
+        setTimeout(() => createProjectile(), i * 200); // Cada 300ms
+    }
+
+    // Iniciar el intervalo decreciente
     intervalId = setInterval(() => {
-        createProjectile();
+        // Generar múltiples gotas por intervalo
+        for (let i = 0; i < projectilesPerInterval; i++) {
+            createProjectile();
+        }
 
         // Reducir el intervalo progresivamente
         if (projectileInterval > minInterval) {
             projectileInterval -= intervalDecrement;
             clearInterval(intervalId); // Reinicia el intervalo con el nuevo tiempo
             startProjectileGeneration();
+        }
+
+        // Incrementar el número de gotas con el tiempo
+        if (projectilesPerInterval < 5) { // Límite máximo de 5 gotas por intervalo
+            projectilesPerInterval += 0.1; // Incrementa lentamente
         }
     }, projectileInterval);
 }
