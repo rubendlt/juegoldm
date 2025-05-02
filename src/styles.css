@@ -33,8 +33,8 @@ body {
     position: absolute;
     bottom: 20px;
     left: 50%;
-    width: 70px; /* Aumenta el ancho del jugador */
-    height: 90px; /* Aumenta el alto del jugador */
+    width: 70px; /* Tamaño visible del sprite */
+    height: 90px;
     background-image: url('furro.png'); /* Imagen del jugador */
     background-size: contain;
     background-repeat: no-repeat;
@@ -42,14 +42,24 @@ body {
     transform: translateX(-50%);
 }
 
+#player .hitbox {
+    position: absolute;
+    width: 40px; /* Reduce el ancho de la hitbox */
+    height: 60px; /* Reduce el alto de la hitbox */
+    top: 15px;
+    left: 15px; 
+    background-color: rgba(255, 0, 0, 0.3); 
+    border-radius: 5px; /
+}
+
 .projectile {
     position: absolute;
-    width: 30px; /* Ajusta el tamaño de las gotas */
-    height: 30px;
-    background-image: url('gotas.png'); /* Imagen de las gotas de agua */
-    background-size: contain; /* Ajusta la imagen al contenedor */
+    width: 45px; /* Reduce el ancho de la hitbox de la gota */
+    height: 45px; /* Reduce el alto de la hitbox de la gota */
+    background-image: url('gotas.png'); 
+    background-size: contain; 
     background-repeat: no-repeat;
     background-position: center;
-    background-color: transparent; /* Asegura que no haya fondo */
-    border-radius: 50%;
+    background-color: transparent; 
+    border-radius: 50%; 
 }
