@@ -19,8 +19,8 @@ document.addEventListener('keydown', (e) => {
 function createProjectile() {
     const projectile = document.createElement('div');
     projectile.classList.add('projectile');
-    projectile.style.left = Math.random() * (gameContainer.clientWidth - 20) + 'px';
-    projectile.style.top = '0px';
+    projectile.style.left = Math.random() * (gameContainer.clientWidth - 30) + 'px'; // Ajusta el ancho
+    projectile.style.top = '-30px'; // Asegúrate de que empiece fuera de la pantalla
     gameContainer.appendChild(projectile);
 
     moveProjectile(projectile);
@@ -30,7 +30,7 @@ function createProjectile() {
 function moveProjectile(projectile) {
     const fallInterval = setInterval(() => {
         const projectileTop = parseInt(projectile.style.top);
-        projectile.style.top = projectileTop + 5 + 'px';
+        projectile.style.top = projectileTop + 4 + 'px'; // Ajusta la velocidad de caída
 
         // Detectar colisión con el jugador
         if (checkCollision(projectile, player)) {
@@ -45,7 +45,7 @@ function moveProjectile(projectile) {
             clearInterval(fallInterval);
             projectile.remove();
         }
-    }, 30);
+    }, 20); // Ajusta la frecuencia de actualización
 }
 
 // Detectar colisión
