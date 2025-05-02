@@ -1,5 +1,7 @@
 const player = document.getElementById('player');
 const gameContainer = document.getElementById('game-container');
+const scoreElement = document.getElementById('score');
+const recordElement = document.getElementById('record'); // Nuevo elemento para mostrar el récord
 
 // Crear la hitbox interna
 const hitbox = document.createElement('div');
@@ -11,17 +13,27 @@ const step = 5; // Reduce el paso para un movimiento más lento
 let keysPressed = {}; // Almacena las teclas presionadas
 let gameOver = false; // Indica si el juego ha terminado
 let intervals = []; // Almacena los intervalos de movimiento de las gotas
+let score = 0; // Puntuación actual
+let record = localStorage.getItem('record') || 0; // Cargar el récord desde el almacenamiento local
 
-// Actualizar la posición del jugador
-function updatePlayerPosition() {
-    if (gameOver) return; // Detener el movimiento si el juego ha terminado
-    if (keysPressed['ArrowLeft'] && playerPosition.x > 0) {
-        playerPosition.x -= step;
+// Mostrar el récord inicial
+recordElement.textContent = `Récord: ${record}`;
+
+// Actualizar la puntuación cada segundo
+function updateScore() {
+    if (gameOver) return;
+    score++;
+    scoreElement.textContent = `Puntuación: ${score}`;
+}
+setInterval(updateScore, 1000); // Incrementa la puntuación cada segundo
+
+// Actualizar el récord si es superado
+function updateRecord() {
+    if (score > record) {
+        record = score;
+        localStorage.setItem('record', record); // Guardar el récord en el almacenamiento local
+        recordElement.textContent = `Récord: ${record}`; // Actualizar el récord en la interfaz
     }
-    if (keysPressed['ArrowRight'] && playerPosition.x < gameContainer.clientWidth - 70) { // Ajusta según el ancho del jugador
-        playerPosition.x += step;
-    }
-    player.style.left = playerPosition.x + 'px';
 }
 
 // Detectar teclas presionadas
@@ -35,7 +47,16 @@ document.addEventListener('keyup', (e) => {
 });
 
 // Actualizar la posición del jugador continuamente
-setInterval(updatePlayerPosition, 20); // Ajusta la frecuencia de actualización
+setInterval(() => {
+    if (gameOver) return; // Detener el movimiento si el juego ha terminado
+    if (keysPressed['ArrowLeft'] && playerPosition.x > 0) {
+        playerPosition.x -= step;
+    }
+    if (keysPressed['ArrowRight'] && playerPosition.x < gameContainer.clientWidth - 70) { // Ajusta según el ancho del jugador
+        playerPosition.x += step;
+    }
+    player.style.left = playerPosition.x + 'px';
+}, 20); // Ajusta la frecuencia de actualización
 
 // Generar proyectiles
 function createProjectile() {
@@ -65,6 +86,7 @@ function moveProjectile(projectile) {
             clearInterval(fallInterval);
             projectile.remove();
             resetGame(); // Llama a la función de reinicio
+            return; // Salir de la función después de la colisión
         }
 
         // Eliminar proyectil si sale del contenedor
@@ -95,8 +117,8 @@ function checkCollision(projectile, player) {
 function resetGame() {
     gameOver = true; // Marcar el juego como terminado
 
-    // Detener la generación de proyectiles
-    clearInterval(intervalId);
+    // Actualizar el récord si es necesario
+    updateRecord();
 
     // Detener todos los intervalos de movimiento de las gotas
     intervals.forEach((interval) => clearInterval(interval));
@@ -135,12 +157,12 @@ let projectileInterval = 1200; // Tiempo inicial entre proyectiles (en milisegun
 let minInterval = 500; // Tiempo mínimo entre proyectiles
 let intervalDecrement = 100; // Cantidad que se reduce el intervalo cada vez
 let intervalId;
-let projectilesPerInterval = 2; // Número inicial de gotas por intervalo
+let projectilesPerInterval = 1; // Número inicial de gotas por intervalo
 
 function startProjectileGeneration() {
     // Generar gotas rápidamente al inicio
-    for (let i = 0; i < 3; i++) { // Genera 3 gotas rápidamente al inicio
-        setTimeout(() => createProjectile(), i * 200); // Cada 300ms
+    for (let i = 0; i < 2; i++) { // Generar gotas al inicio
+        setTimeout(() => createProjectile(), i * 200); // Cada ms
     }
 
     // Iniciar el intervalo decreciente
