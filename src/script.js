@@ -1,12 +1,20 @@
 const player = document.getElementById('player');
 const gameContainer = document.getElementById('game-container');
 
+// Crear la hitbox interna
+const hitbox = document.createElement('div');
+hitbox.classList.add('hitbox');
+player.appendChild(hitbox);
+
 let playerPosition = { x: gameContainer.clientWidth / 2 - 25, y: gameContainer.clientHeight - 60 };
 const step = 5; // Reduce el paso para un movimiento más lento
 let keysPressed = {}; // Almacena las teclas presionadas
+let gameOver = false; // Indica si el juego ha terminado
+let intervals = []; // Almacena los intervalos de movimiento de las gotas
 
 // Actualizar la posición del jugador
 function updatePlayerPosition() {
+    if (gameOver) return; // Detener el movimiento si el juego ha terminado
     if (keysPressed['ArrowLeft'] && playerPosition.x > 0) {
         playerPosition.x -= step;
     }
@@ -31,6 +39,7 @@ setInterval(updatePlayerPosition, 20); // Ajusta la frecuencia de actualización
 
 // Generar proyectiles
 function createProjectile() {
+    if (gameOver) return; // No generar proyectiles si el juego ha terminado
     const projectile = document.createElement('div');
     projectile.classList.add('projectile');
     projectile.style.left = Math.random() * (gameContainer.clientWidth - 30) + 'px'; // Ajusta el ancho
@@ -43,15 +52,19 @@ function createProjectile() {
 // Mover proyectiles hacia abajo
 function moveProjectile(projectile) {
     const fallInterval = setInterval(() => {
+        if (gameOver) {
+            clearInterval(fallInterval); // Detener el movimiento si el juego ha terminado
+            return;
+        }
+
         const projectileTop = parseInt(projectile.style.top);
         projectile.style.top = projectileTop + 4 + 'px'; // Ajusta la velocidad de caída
 
         // Detectar colisión con el jugador
         if (checkCollision(projectile, player)) {
-            alert('¡Has perdido!');
             clearInterval(fallInterval);
             projectile.remove();
-            resetGame();
+            resetGame(); // Llama a la función de reinicio
         }
 
         // Eliminar proyectil si sale del contenedor
@@ -60,24 +73,61 @@ function moveProjectile(projectile) {
             projectile.remove();
         }
     }, 20); // Ajusta la frecuencia de actualización
+
+    intervals.push(fallInterval); // Almacena el intervalo para detenerlo después
 }
 
 // Detectar colisión
 function checkCollision(projectile, player) {
+    const hitbox = player.querySelector('.hitbox'); // Selecciona la hitbox interna
     const projectileRect = projectile.getBoundingClientRect();
-    const playerRect = player.getBoundingClientRect();
+    const hitboxRect = hitbox.getBoundingClientRect();
 
     return !(
-        projectileRect.bottom < playerRect.top ||
-        projectileRect.top > playerRect.bottom ||
-        projectileRect.right < playerRect.left ||
-        projectileRect.left > playerRect.right
+        projectileRect.bottom < hitboxRect.top ||
+        projectileRect.top > hitboxRect.bottom ||
+        projectileRect.right < hitboxRect.left ||
+        projectileRect.left > hitboxRect.right
     );
 }
 
 // Reiniciar el juego
 function resetGame() {
-    location.reload();
+    gameOver = true; // Marcar el juego como terminado
+
+    // Detener la generación de proyectiles
+    clearInterval(intervalId);
+
+    // Detener todos los intervalos de movimiento de las gotas
+    intervals.forEach((interval) => clearInterval(interval));
+    intervals = [];
+
+    // Eliminar todas las gotas existentes
+    document.querySelectorAll('.projectile').forEach((projectile) => projectile.remove());
+
+    // Crear el botón de reinicio
+    const restartButton = document.createElement('button');
+    restartButton.textContent = 'Reiniciar';
+    restartButton.style.position = 'absolute';
+    restartButton.style.top = '50%';
+    restartButton.style.left = '50%';
+    restartButton.style.transform = 'translate(-50%, -50%)';
+    restartButton.style.padding = '10px 20px';
+    restartButton.style.fontSize = '18px';
+    restartButton.style.backgroundColor = '#ff4d4d';
+    restartButton.style.color = '#fff';
+    restartButton.style.border = 'none';
+    restartButton.style.borderRadius = '5px';
+    restartButton.style.cursor = 'pointer';
+    restartButton.style.zIndex = '1000';
+
+    // Agregar el botón al contenedor del juego
+    gameContainer.appendChild(restartButton);
+
+    // Reiniciar el juego al hacer clic en el botón
+    restartButton.addEventListener('click', () => {
+        location.reload();
+    });
 }
 
 // Generar proyectiles continuamente con intervalo decreciente
