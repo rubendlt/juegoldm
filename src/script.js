@@ -186,5 +186,40 @@ function startProjectileGeneration() {
     }, projectileInterval);
 }
 
-// Inicia la generación de proyectiles
-startProjectileGeneration();
+// Crear el botón de iniciar juego
+function createStartButton() {
+    const startButton = document.createElement('button');
+    startButton.textContent = 'Iniciar Juego';
+    startButton.style.position = 'absolute';
+    startButton.style.top = '50%';
+    startButton.style.left = '50%';
+    startButton.style.transform = 'translate(-50%, -50%)';
+    startButton.style.padding = '10px 20px';
+    startButton.style.fontSize = '18px';
+    startButton.style.backgroundColor = '#4CAF50';
+    startButton.style.color = '#fff';
+    startButton.style.border = 'none';
+    startButton.style.borderRadius = '5px';
+    startButton.style.cursor = 'pointer';
+    startButton.style.zIndex = '1000';
+
+    // Agregar el botón al contenedor del juego
+    gameContainer.appendChild(startButton);
+
+    // Iniciar el juego al hacer clic en el botón
+    startButton.addEventListener('click', () => {
+        startButton.remove(); // Eliminar el botón
+        startGame(); // Llamar a la función para iniciar el juego
+    });
+}
+
+// Función para iniciar el juego
+function startGame() {
+    gameOver = false; // Asegurarse de que el juego no esté en estado de game over
+    score = 0; // Reiniciar la puntuación
+    scoreElement.textContent = `Puntuación: ${score}`;
+    startProjectileGeneration(); // Iniciar la generación de proyectiles
+}
+
+// Crear el botón de inicio al cargar la página
+createStartButton();
