@@ -15,6 +15,7 @@ let gameOver = false;
 let intervals = [];
 let score = 0;
 let record = localStorage.getItem('record') || 0;
+let scoreIntervalId;
 
 let projectileInterval = 1200;
 const minInterval = 500;
@@ -95,6 +96,7 @@ function resetGame() {
     updateRecord();
 
     clearInterval(intervalId);
+    clearInterval(scoreIntervalId);
     intervals.forEach((interval) => clearInterval(interval));
     intervals = [];
 
@@ -157,8 +159,11 @@ function startGame() {
     score = 0;
     projectileInterval = 1200;
     projectilesPerInterval = 1;
+    playerPosition.x = gameContainer.clientWidth / 2 - 25; // Centrar jugador
+    player.style.left = playerPosition.x + 'px';
     scoreElement.textContent = `Puntuación: ${score}`;
     startProjectileGeneration();
+    scoreIntervalId = setInterval(updateScore, 1000);
 }
 
 document.addEventListener('keydown', (e) => {
@@ -182,6 +187,4 @@ setInterval(() => {
     player.style.left = playerPosition.x + 'px';
 }, 20);
 
-setInterval(updateScore, 1000);
 createStartButton();
-
