@@ -32,7 +32,7 @@ body {
     position: absolute;
     bottom: 20px;
     left: 50%;
-    width: 70px; /* Tamaño visible del sprite */
+    width: 90px; /* Tamaño visible del sprite */
     height: 90px;
     background-image: url('furro.png'); /* Imagen del jugador */
     background-size: contain;
