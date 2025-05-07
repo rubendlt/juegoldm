@@ -24,14 +24,12 @@ let projectilesPerInterval = 1;
 
 recordElement.textContent = `Récord: ${record}`;
 
-// Función para actualizar la puntuación
 function updateScore() {
     if (gameOver) return;
     score++;
     scoreElement.textContent = `Puntuación: ${score}`;
 }
 
-// Función para actualizar el récord si es superado
 function updateRecord() {
     if (score > record) {
         record = score;
@@ -40,7 +38,6 @@ function updateRecord() {
     }
 }
 
-// Función para generar proyectiles
 function createProjectile() {
     if (gameOver) return;
 
@@ -53,7 +50,6 @@ function createProjectile() {
     moveProjectile(projectile);
 }
 
-// Función para mover proyectiles hacia abajo
 function moveProjectile(projectile) {
     const fallInterval = setInterval(() => {
         if (gameOver) {
@@ -80,7 +76,6 @@ function moveProjectile(projectile) {
     intervals.push(fallInterval);
 }
 
-// Función para detectar colisiones
 function checkCollision(projectile, player) {
     const hitbox = player.querySelector('.hitbox');
     const projectileRect = projectile.getBoundingClientRect();
@@ -94,28 +89,24 @@ function checkCollision(projectile, player) {
     );
 }
 
-// Función para reiniciar el juego
 function resetGame() {
     gameOver = true;
 
     updateRecord();
 
+    clearInterval(intervalId);
     intervals.forEach((interval) => clearInterval(interval));
     intervals = [];
-
-    if (intervalId) clearInterval(intervalId);
 
     document.querySelectorAll('.projectile').forEach((projectile) => projectile.remove());
 
     createRestartButton();
 }
 
-// Función para crear el botón de reinicio
 function createRestartButton() {
     const restartButton = document.createElement('button');
     restartButton.textContent = 'Reiniciar';
-    styleButton(restartButton, '#ff4d4d');
-
+    restartButton.classList.add('game-button', 'restart');
     gameContainer.appendChild(restartButton);
 
     restartButton.addEventListener('click', () => {
@@ -124,7 +115,6 @@ function createRestartButton() {
     });
 }
 
-// Función para generar proyectiles continuamente
 function startProjectileGeneration() {
     for (let i = 0; i < 2; i++) {
         setTimeout(() => createProjectile(), i * 200);
@@ -147,15 +137,13 @@ function startProjectileGeneration() {
     }, projectileInterval);
 }
 
-// Función para crear el botón de inicio
 function createStartButton() {
     if (document.querySelector('#start-button')) return;
 
     const startButton = document.createElement('button');
     startButton.id = 'start-button';
     startButton.textContent = 'Iniciar Juego';
-    styleButton(startButton, '#4CAF50');
-
+    startButton.classList.add('game-button', 'start');
     gameContainer.appendChild(startButton);
 
     startButton.addEventListener('click', () => {
@@ -164,40 +152,15 @@ function createStartButton() {
     });
 }
 
-// Función para aplicar estilos a los botones
-function styleButton(button, backgroundColor) {
-    button.style.position = 'absolute';
-    button.style.top = '50%';
-    button.style.left = '50%';
-    button.style.transform = 'translate(-50%, -50%)';
-    button.style.padding = '10px 20px';
-    button.style.fontSize = '18px';
-    button.style.backgroundColor = backgroundColor;
-    button.style.color = '#fff';
-    button.style.border = 'none';
-    button.style.borderRadius = '5px';
-    button.style.cursor = 'pointer';
-    button.style.zIndex = '1000';
-}
-
-// Función para iniciar el juego
 function startGame() {
     gameOver = false;
     score = 0;
-    scoreElement.textContent = `Puntuación: ${score}`;
-
-    // Reiniciar dificultad
     projectileInterval = 1200;
     projectilesPerInterval = 1;
-
-    // Reiniciar posición del jugador
-    playerPosition.x = gameContainer.clientWidth / 2 - 25;
-    player.style.left = playerPosition.x + 'px';
-
+    scoreElement.textContent = `Puntuación: ${score}`;
     startProjectileGeneration();
 }
 
-// Manejo de movimiento del jugador
 document.addEventListener('keydown', (e) => {
     keysPressed[e.key] = true;
 });
@@ -219,6 +182,6 @@ setInterval(() => {
     player.style.left = playerPosition.x + 'px';
 }, 20);
 
-// Inicialización
 setInterval(updateScore, 1000);
 createStartButton();
+

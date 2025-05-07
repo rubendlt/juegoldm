@@ -11,17 +11,17 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #87CEEB; /* Color de fondo fuera del contenedor */
+    background-color: #87CEEB;
 }
 
 #game-container {
     position: relative;
     width: 800px;
     height: 600px;
-    background-color: rgba(135, 206, 235, 0.8); /* Fondo semitransparente */
-    background-image: url('background.png'); /* Fondo del juego */
+    background-color: rgba(135, 206, 235, 0.8);
+    background-image: url('background.png');
     background-size: cover;
-    background-position: center top; /* Mueve el fondo hacia arriba */
+    background-position: center top;
     overflow: hidden;
     border: 2px solid black;
     border-radius: 10px;
@@ -32,9 +32,9 @@ body {
     position: absolute;
     bottom: 20px;
     left: 50%;
-    width: 90px; /* Tamaño visible del sprite */
+    width: 90px;
     height: 90px;
-    background-image: url('furro.png'); /* Imagen del jugador */
+    background-image: url('furro.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -43,24 +43,24 @@ body {
 
 #player .hitbox {
     position: absolute;
-    width: 40px; /* Reduce el ancho de la hitbox */
-    height: 60px; /* Reduce el alto de la hitbox */
+    width: 40px;
+    height: 60px;
     top: 15px;
-    left: 15px; 
-    background-color: transparent; 
+    left: 15px;
+    background-color: transparent;
     border-radius: 5px;
 }
 
 .projectile {
     position: absolute;
-    width: 30px; /* Reduce el ancho de la hitbox de la gota */
-    height: 30px; /* Reduce el alto de la hitbox de la gota */
-    background-image: url('gotas.png'); 
-    background-size: contain; 
+    width: 30px;
+    height: 30px;
+    background-image: url('gotas.png');
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: transparent; 
-    border-radius: 50%; 
+    background-color: transparent;
+    border-radius: 50%;
 }
 
 #score-container {
@@ -69,26 +69,50 @@ body {
     left: 10px;
     display: flex;
     align-items: center;
-    gap: 20px; /* Espaciado entre puntuación y récord */
+    gap: 20px;
     font-size: 18px;
     font-family: Arial, sans-serif;
     color: #fff;
     z-index: 1000;
-    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
-    padding: 10px 20px; /* Espaciado interno */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 #score-container span {
     display: inline-block;
     padding: 5px 10px;
-    background-color: rgba(255, 255, 255, 0.2); /* Fondo claro semitransparente */
-    border-radius: 5px; /* Bordes redondeados */
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
     font-weight: bold;
 }
 
 #record {
     font-weight: bold;
-    color: #FFD700; /* Color dorado para el récord */
+    color: #FFD700;
+}
+
+/* === Botones === */
+
+.game-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    font-size: 18px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.game-button.start {
+    background-color: #4CAF50;
+}
+
+.game-button.restart {
+    background-color: #ff4d4d;
 }
